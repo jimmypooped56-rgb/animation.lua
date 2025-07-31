@@ -1,5 +1,5 @@
--- Animation Panel Script
--- Loads a UI with an open/close menu and a Play Animation button
+-- Animation Panel Script with Debug Print
+print("✅ Animation UI script has loaded!")
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local event = ReplicatedStorage:WaitForChild("PlayAnimationEvent")
