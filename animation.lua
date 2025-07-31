@@ -1,4 +1,4 @@
--- Debug Notification to confirm script runs
+-- Debug Notification
 pcall(function()
     game.StarterGui:SetCore("SendNotification", {
         Title = "Script Loaded";
@@ -15,23 +15,13 @@ if not event then
     event.Parent = ReplicatedStorage
 end
 
--- Create ScreenGui (force into CoreGui so it always shows)
+-- GUI in CoreGui so it always shows
 local gui = Instance.new("ScreenGui")
 gui.Name = "AnimationGui"
-gui.ResetOnSpawn = false
 gui.IgnoreGuiInset = true
 gui.Parent = game:GetService("CoreGui")
 
--- Debug after GUI is created
-pcall(function()
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "UI Debug";
-        Text = "📦 AnimationGui added to CoreGui!";
-        Duration = 5;
-    })
-end)
-
--- "Open Menu" button
+-- Open Menu button
 local openButton = Instance.new("TextButton")
 openButton.Size = UDim2.new(0, 120, 0, 50)
 openButton.Position = UDim2.new(0, 20, 0.8, 0)
@@ -43,8 +33,8 @@ openButton.Parent = gui
 
 -- Panel
 local panel = Instance.new("Frame")
-panel.Size = UDim2.new(0, 220, 0, 150)
-panel.Position = UDim2.new(0.5, -110, 0.5, -75)
+panel.Size = UDim2.new(0, 250, 0, 160)
+panel.Position = UDim2.new(0.5, -125, 0.5, -80)
 panel.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 panel.Visible = false
 panel.ZIndex = 10
@@ -60,15 +50,25 @@ closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeButton.ZIndex = 10
 closeButton.Parent = panel
 
--- "Play Animation" button
-local animButton = Instance.new("TextButton")
-animButton.Size = UDim2.new(0, 200, 0, 50)
-animButton.Position = UDim2.new(0.5, -100, 0.5, -25)
-animButton.Text = "Play Animation"
-animButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-animButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-animButton.ZIndex = 10
-animButton.Parent = panel
+-- TextBox for Animation ID
+local animBox = Instance.new("TextBox")
+animBox.Size = UDim2.new(0, 200, 0, 40)
+animBox.Position = UDim2.new(0.5, -100, 0.3, -20)
+animBox.PlaceholderText = "Enter Animation ID"
+animBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+animBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+animBox.ZIndex = 10
+animBox.Parent = panel
+
+-- Play button
+local playButton = Instance.new("TextButton")
+playButton.Size = UDim2.new(0, 200, 0, 50)
+playButton.Position = UDim2.new(0.5, -100, 0.7, -25)
+playButton.Text = "Play Animation"
+playButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+playButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+playButton.ZIndex = 10
+playButton.Parent = panel
 
 -- Button logic
 openButton.MouseButton1Click:Connect(function()
@@ -81,15 +81,19 @@ closeButton.MouseButton1Click:Connect(function()
 	openButton.Visible = true
 end)
 
-animButton.MouseButton1Click:Connect(function()
-	event:FireServer()
+playButton.MouseButton1Click:Connect(function()
+	local inputId = animBox.Text
+	if inputId and inputId ~= "" then
+		-- Fire to server with entered animation ID
+		event:FireServer(inputId)
 
-	-- Debug confirm
-	pcall(function()
-	    game.StarterGui:SetCore("SendNotification", {
-	        Title = "Button Clicked";
-	        Text = "🎵 Play Animation fired!";
-	        Duration = 3;
-	    })
-	end)
+		-- Debug confirm
+		pcall(function()
+			game.StarterGui:SetCore("SendNotification", {
+				Title = "Animation Sent";
+				Text = "🎬 ID: " .. inputId;
+				Duration = 3;
+			})
+		end)
+	end
 end)
