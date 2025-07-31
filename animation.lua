@@ -1,5 +1,9 @@
--- Animation Panel Script with Debug Print
-print("✅ Animation UI script has loaded!")
+-- Animation Panel Script with Debug Notification
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Script Loaded";
+    Text = "✅ Animation UI script has loaded!";
+    Duration = 5;
+})
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local event = ReplicatedStorage:WaitForChild("PlayAnimationEvent")
